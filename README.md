@@ -23,9 +23,18 @@ I tried using Fluid.app, which is otherwise great, but the Hangouts WebKit plugi
 * Manage windows better
 * Have a cool icon (hopefully)
 
+## How do I use it?
+
+* [Download a release from this page](https://github.com/chadbailey59/covalent/releases)
+* Open the app
+* Sign in to your Google account
+* Call people from that page
+* To open a hangout from a URL, click **File ➞ Join Hangout from Url…** or **Cmd-N**
+
+
 ## Can I open Hangouts more quickly somehow?
 
-Sure! Install [Browser Fairy](http://www.browserfairy.com) on your Mac. Then, create a rule to open Hangouts in Covalent:
+I'm glad you asked. Install [Browser Fairy](http://www.browserfairy.com) on your Mac. Then, create a rule to open Hangouts in Covalent:
 
 ![Browser Fairy Settings](https://www.evernote.com/l/AAHOH_V9vw5BYK85cihVKq01tz4-G2MgDDYB/image.png)
 
