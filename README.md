@@ -1,3 +1,9 @@
+# Build it
+
+```
+electron-packager . --platform=darwin --arch=x64 --extend-info extra.plist --overwrite --out builds
+```
+
 # electron-quick-start
 
 **Clone and run for a quick way to see an Electron in action.**

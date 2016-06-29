@@ -1,27 +1,25 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "Covalent",
+  "version": "0.1",
+  "description": "An Electron app for Google Hangouts",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron/electron-quick-start.git"
+    "url": "git+https://github.com/chadbailey59/covalent.git"
   },
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial"
+    "Google Hangouts",
+    "Electron"
   ],
-  "author": "GitHub",
+  "author": "Chad Bailey",
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://github.com/electron/electron-quick-start/issues"
+    "url": "https://github.com/chadbailey59/covalent/issues"
   },
-  "homepage": "https://github.com/electron/electron-quick-start#readme",
+  "homepage": "https://github.com/chadbailey59/covalent",
   "devDependencies": {
     "electron-prebuilt": "^1.2.0"
   }
