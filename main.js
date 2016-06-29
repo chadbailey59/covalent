@@ -42,12 +42,15 @@ function createMenu() {
           label: 'Join Hangout from URL…',
           accelerator: 'CmdOrCtrl+N',
           click(item, focusedWindow, event) {
-            // eventually this can smartly reuse the main window if it exists
-            newWindow = new BrowserWindow({width: 1024, height: 768})
-            newWindow.loadURL('file://' + __dirname + '/index.html')
-            newWindow.on('closed', function () { newWindow = null })
+            mainWindow.loadURL('file://' + __dirname + '/index.html')
           }
-          
+        },
+        {
+          label: 'Hangouts Home Page',
+          accelerator: 'CmdOrCtrl+Shift+H',
+          click(item, focusedWindow, event) {
+            mainWindow.loadURL('https://hangouts.google.com')
+          }
         }
       ]
     },
@@ -114,10 +117,21 @@ function createMenu() {
           accelerator: 'CmdOrCtrl+T',
           type: 'checkbox',
           click(item, focusedWindow) {
-            if (item.checked == true) {
-              focusedWindow.setAlwaysOnTop(true);
-            } else {
-              focusedWindow.setAlwaysOnTop(false);
+            if(focusedWindow) {
+              if (item.checked == true) {
+                focusedWindow.setAlwaysOnTop(true);
+              } else {
+                focusedWindow.setAlwaysOnTop(false);
+              }              
+            }
+          }
+        },
+        {
+          label: 'Tiny Mode',
+          accelerator: 'CmdOrCtrl+Shift+T',
+          click(item, focusedWindow) {
+            if(focusedWindow) {
+              mainWindow.setSize(500, 300)
             }
           }
         },

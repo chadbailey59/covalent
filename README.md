@@ -1,38 +1,56 @@
-# Build it
+# [Download a release to get started!](https://github.com/chadbailey59/covalent/releases)
+
+## What is Covalent?
+
+We use Google Hangouts for meetings at work A LOT. I got tired of losing my Hangouts tab amongst all my other browser tabs. I wanted to be able to command-tab back to my meeting, or float it over other windows.
+
+I tried using Fluid.app, which is otherwise great, but the Hangouts WebKit plugin is super crashy. So Electron to the rescue!
+
+## Why'd you call it that?
+
+[Electron Hangouts](https://en.wikipedia.org/wiki/Covalent_bond).
+
+## What cool things does it do right now?
+
+* Gives you an always-on-top window if you want it
+* Allows you to join by URL (File menu or Cmd-N)
+* Quickly give you a small window (tiny mode)
+
+## What cool things will it do soon?
+
+* Give you a system-wide mute key
+* Quickly create an ad-hoc hangout with a link already on your clipboard
+* Manage windows better
+* Have a cool icon (hopefully)
+
+## Can I open Hangouts more quickly somehow?
+
+Sure! Install [Browser Fairy](http://www.browserfairy.com) on your Mac. Then, create a rule to open Hangouts in Covalent:
+
+![Browser Fairy Settings](https://www.evernote.com/l/AAHOH_V9vw5BYK85cihVKq01tz4-G2MgDDYB/image.png)
+
+That way, if you open Hangouts links from [Fantastical](https://flexibits.com/fantastical), or [Alfred](https://www.alfredapp.com), or HipChat, or an email app, or any other not-browser app, you'll go right to Covalent.
+
+I'm sure there are ways to do that on other platforms too.
+
+## Can I hack on it?
+
+Sure!
 
 ```
-electron-packager . --platform=darwin --arch=x64 --extend-info extra.plist --overwrite --out builds
+$ git clone https://github.com/chadbailey59/covalent
+$ cd covalent
+$ npm install
+$ npm start
 ```
 
-# electron-quick-start
+# Can I build my own version?
 
-**Clone and run for a quick way to see an Electron in action.**
+Be my guest.
 
-This is a minimal Electron application based on the [Quick Start Guide](http://electron.atom.io/docs/latest/tutorial/quick-start) within the Electron documentation.
-
-**Use this app along with the [Electron API Demos](http://electron.atom.io/#get-started) app for API code examples to help you get started.**
-
-A basic Electron application needs just these files:
-
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
-
-You can learn more about each of these components within the [Quick Start Guide](http://electron.atom.io/docs/latest/tutorial/quick-start).
-
-## To Use
-
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
-
-```bash
-# Clone this repository
-git clone https://github.com/electron/electron-quick-start
-# Go into the repository
-cd electron-quick-start
-# Install dependencies and run the app
-npm install && npm start
 ```
-
-Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/latest).
+$ npm install electron-packager -g
+$ electron-packager . --platform=darwin --arch=x64 --extend-info extra.plist --overwrite --out builds
+```
 
 #### License [CC0 (Public Domain)](LICENSE.md)
