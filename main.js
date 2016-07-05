@@ -19,7 +19,6 @@ function createWindow () {
   // draggable region, etc
   
   // and load the index.html of the app.
-  mainWindow.loadURL(`https://hangouts.google.com`)
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -31,6 +30,9 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+}
+function loadHomepage() {
+  mainWindow.loadURL(`https://hangouts.google.com`)
 }
 
 function createMenu() {
@@ -222,9 +224,11 @@ function createMenu() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
-app.on('ready', createMenu)
-// Create the menu item to open a new Hangouts window.
+app.on('ready', function() {
+  createWindow()
+  loadHomepage()
+  createMenu()
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -245,9 +249,10 @@ app.on('activate', function () {
 
 app.on('open-url', function(event, url) {
   event.preventDefault()
-  newWindow = new BrowserWindow({width: 1024, height: 768})
-  newWindow.loadURL(url)
-  newWindow.on('closed', function () { newWindow = null })
+  if (mainWindow === null) {
+    createWindow()
+  }
+  mainWindow.loadURL(url)
 })
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
