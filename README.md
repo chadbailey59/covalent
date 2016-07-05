@@ -20,7 +20,6 @@ I tried using Fluid.app, which is otherwise great, but the Hangouts WebKit plugi
 
 * Give you a system-wide mute key
 * Quickly create an ad-hoc hangout with a link already on your clipboard
-* Manage windows better
 * Have a cool icon (hopefully)
 
 ## How do I use it?
@@ -41,6 +40,12 @@ I'm glad you asked. Install [Browser Fairy](http://www.browserfairy.com) on your
 That way, if you open Hangouts links from [Fantastical](https://flexibits.com/fantastical), or [Alfred](https://www.alfredapp.com), or HipChat, or an email app, or any other not-browser app, you'll go right to Covalent.
 
 I'm sure there are ways to do that on other platforms too.
+
+## Can I change some settings?
+
+There's no UI for it, but after you first launch the app there's a file at `~/Library/Application Support/Covalent/electron-settings/settings.json` that contains some things you can tweak. Here's a running list:
+
+* `homepage` controls the page that opens when the app launches or creates a new window. You might want to set it to your 'daily overview' page, such as `https://hangouts.google.com/hangouts/_/heroku.com`. Right now that shows meeting times in UTC, so be aware of that. :)
 
 ## Can I hack on it?
 

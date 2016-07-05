@@ -5,6 +5,9 @@ const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
 const {dialog} = require('electron')
+const ElectronSettings = require('electron-settings');
+let settings = new ElectronSettings();
+if (settings.get('homepage') === undefined) settings.set('homepage', 'https://hangouts.google.com')
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -32,7 +35,7 @@ function createWindow () {
   })
 }
 function loadHomepage() {
-  mainWindow.loadURL(`https://hangouts.google.com`)
+  mainWindow.loadURL(settings.get('homepage'))
 }
 
 function createMenu() {
