@@ -20,11 +20,11 @@ function createWindow () {
   // if I want to make it Mavericks-style: titleBarStyle: 'hidden' above
   // see http://electron.atom.io/docs/api/frameless-window/ for how to add a
   // draggable region, etc
-  
+
   // and load the index.html of the app.
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -35,9 +35,47 @@ function createWindow () {
   })
 }
 function loadHomepage() {
-  mainWindow.loadURL(settings.get('homepage'))
+  openUrl(settings.get('homepage'))
 }
 
+function openUrl(url) {
+  mainWindow.loadURL(url)
+  mainWindow.webContents.on('did-finish-load', function() {
+    console.log("firing did-finish-load")
+    mainWindow.webContents.executeJavaScript(`
+
+      // Load the script
+      var script = document.createElement("SCRIPT");
+      script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js';
+      script.type = 'text/javascript';
+      document.getElementsByTagName("head")[0].appendChild(script);
+      // Poll for jQuery to come into existance
+      var checkReady = function(callback) {
+        if (window.jQuery) {
+            callback(jQuery);
+        }
+        else {
+            window.setTimeout(function() { checkReady(callback); }, 100);
+        }
+      };
+
+      // Start polling...
+      checkReady(function($) {
+        // Use $ here...
+        console.log('ok now jquery is ready with the new way', $)
+      });
+
+      function loadScript(url, callback) {
+        var script = document.createElement("script")
+        script.type = "text/javascript";
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+      }
+      loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js", function () {
+      });
+    `)
+  })
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
