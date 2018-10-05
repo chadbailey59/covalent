@@ -1,55 +1,91 @@
+// ====== CONTENTS OF MENU.JS ==========
 exports.createMenu = function(app) {
-  var electron = require('electron')
-  var template = [
+  var exec = require('child_process').exec;
+  const settings = require('electron-settings')
+  const electron = require('electron')
+
+  const enableAlwaysOnTop = function(focusedWindow) {
+    focusedWindow.setAlwaysOnTop(true);
+  }
+
+  const disableAlwaysOnTop = function(focusedWindow) {
+    focusedWindow.setAlwaysOnTop(false);
+  }
+
+  const enableMiniMode = function(focusedWindow) {
+    setWindowMode('mini', focusedWindow);
+  }
+
+  const disableMiniMode = function(focusedWindow) {
+    setWindowMode('full', focusedWindow);
+  }
+
+  const enableAutoFloat = function(focusedWindow) {
+    focusedWindow.setAlwaysOnTop(true);
+    electron.Menu.getApplicationMenu().items[4].submenu.items[0].enabled = false
+    electron.Menu.getApplicationMenu().items[4].submenu.items[0].checked = false
+    electron.Menu.getApplicationMenu().items[4].submenu.items[1].enabled = false
+    electron.Menu.getApplicationMenu().items[4].submenu.items[1].checked = false
+    disableMiniMode(focusedWindow);
+
+    focusedWindow.on('blur', function() {
+      enableMiniMode(focusedWindow);
+    });
+    focusedWindow.on('focus', function() {
+      disableMiniMode(focusedWindow);
+    });
+  }
+
+  const disableAutoFloat = function(focusedWindow) {
+    focusedWindow.setAlwaysOnTop(false);
+    focusedWindow.removeAllListeners('blur');
+    focusedWindow.removeAllListeners('focus');
+    electron.Menu.getApplicationMenu().items[4].submenu.items[0].enabled = true
+    electron.Menu.getApplicationMenu().items[4].submenu.items[1].enabled = true
+  }
+
+  const template = [
     {
       label: 'File',
       submenu: [
         {
           label: 'Join Hangout from URL…',
-          accelerator: 'CmdOrCtrl+N',
           click(item, focusedWindow, event) {
-            mainWindow.loadURL('file://' + __dirname + '/index.html')
+            focusedWindow.loadURL('file://' + __dirname + '/index.html')
           }
         },
         {
-          label: 'Hangouts Home Page',
-          accelerator: 'CmdOrCtrl+Shift+H',
+          label: 'Meet Home Page',
           click(item, focusedWindow, event) {
-            mainWindow.loadURL('https://hangouts.google.com')
+            focusedWindow.loadURL('https://meet.google.com')
           }
-        }
+        },
+        {
+          label: 'Move Current Meeting to Chrome',
+          click(item, focusedWindow, event) {
+            var meetingUrl = focusedWindow.webContents.getURL().replace(/\?.*/, '');
+            // remove authuser query param so google can pick it in chrome smartly
+            exec(`open -a "Google Chrome" "${meetingUrl}"`, (err, stdout, stderr) => {
+              if (err) return;
+              focusedWindow.close();
+            });
+          }
+        },
+
       ]
     },
     {
       label: 'Edit',
       submenu: [
-        {
-          role: 'undo'
-        },
-        {
-          role: 'redo'
-        },
-        {
-          type: 'separator'
-        },
-        {
-          role: 'cut'
-        },
-        {
-          role: 'copy'
-        },
-        {
-          role: 'paste'
-        },
-        {
-          role: 'pasteandmatchstyle'
-        },
-        {
-          role: 'delete'
-        },
-        {
-          role: 'selectall'
-        },
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'pasteandmatchstyle' },
+        { role: 'delete' },
+        { role: 'selectall' },
       ]
     },
     {
@@ -77,27 +113,50 @@ exports.createMenu = function(app) {
     },
     {
       role: 'window',
+      id: 'window',
       submenu: [
         {
+          id: 'alwaysontop',
           label: 'Always On Top',
-          accelerator: 'CmdOrCtrl+T',
+          accelerator: 'CmdOrCtrl+Shift+T',
           type: 'checkbox',
           click(item, focusedWindow) {
             if(focusedWindow) {
               if (item.checked == true) {
-                focusedWindow.setAlwaysOnTop(true);
+                enableAlwaysOnTop(focusedWindow);
               } else {
-                focusedWindow.setAlwaysOnTop(false);
+                disableAlwaysOnTop(focusedWindow);
               }              
             }
           }
         },
         {
-          label: 'Tiny Mode',
-          accelerator: 'CmdOrCtrl+Shift+T',
+          id: 'minimode',
+          label: 'Mini Mode',
+          accelerator: 'CmdOrCtrl+Shift+M',
+          type: 'checkbox',
           click(item, focusedWindow) {
             if(focusedWindow) {
-              mainWindow.setSize(500, 300)
+              if (item.checked == true) {
+                enableMiniMode(focusedWindow);
+              } else {
+                disableMiniMode(focusedWindow);
+              }
+            }
+          }
+        },
+        {
+          id: 'autofloat',
+          label: 'Auto-Float',
+          accelerator: 'CmdOrCtrl+Shift+F',
+          type: 'checkbox',
+          click(item, focusedWindow) {
+            if(focusedWindow) {
+              if (item.checked == true) {
+                enableAutoFloat(focusedWindow);
+              } else {
+                disableAutoFloat(focusedWindow);
+              }              
             }
           }
         },
@@ -124,63 +183,30 @@ exports.createMenu = function(app) {
     template.unshift({
       label: name,
       submenu: [
-        {
-          role: 'about'
-        },
-        {
-          type: 'separator'
-        },
-        {
-          role: 'services',
-          submenu: []
-        },
-        {
-          type: 'separator'
-        },
-        {
-          role: 'hide'
-        },
-        {
-          role: 'hideothers'
-        },
-        {
-          role: 'unhide'
-        },
-        {
-          type: 'separator'
-        },
-        {
-          role: 'quit'
-        },
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'services', submenu: [] },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideothers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' },
       ]
     });
-    // Window menu.
     template[3].submenu = [
-      {
-        label: 'Close',
-        accelerator: 'CmdOrCtrl+W',
-        role: 'close'
-      },
-      {
-        label: 'Minimize',
-        accelerator: 'CmdOrCtrl+M',
-        role: 'minimize'
-      },
-      {
-        label: 'Zoom',
-        role: 'zoom'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Bring All to Front',
-        role: 'front'
-      }
+      { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
+      { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
+      { label: 'Zoom', role: 'zoom' },
+      { type: 'separator' },
+      { label: 'Bring All to Front', role: 'front' }
     ];
   }
 
-  menu = electron.Menu.buildFromTemplate(template);
-  electron.Menu.setApplicationMenu(menu);
+  const meenu = electron.Menu.buildFromTemplate(template);
+  electron.Menu.setApplicationMenu(meenu);
 }
+
+// =====================================
+
 
