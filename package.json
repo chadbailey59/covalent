@@ -38,8 +38,8 @@
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
-        "owner": "",
-        "name": ""
+        "owner": "chadbailey59",
+        "name": "covalent"
       },
       "windowsStoreConfig": {
         "packageName": "",
